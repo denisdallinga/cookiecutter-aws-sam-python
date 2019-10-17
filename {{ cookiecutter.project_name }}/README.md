@@ -26,7 +26,6 @@ make test
 ```
 
 **Tip**: Commands passed to `pipenv run` will be executed in the Virtual environment created for our project.
-{% endif %}
 
 ## Packaging
 
