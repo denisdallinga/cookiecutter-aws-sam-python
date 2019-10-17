@@ -30,14 +30,14 @@ deliver: install build package deploy
 local-run: build invoke
 
 build:
-	${PIPENV} lock -r > ${BASE}/mcc_software_collector/requirements.txt
+	${PIPENV} lock -r > ${BASE}/{{ cookiecutter.project_name }}/requirements.txt
 	sam build --debug
 
 package: _check_lambda_bucket_definition
 	sam package --s3-bucket $(LAMBDA_BUCKET) --output-template-file packaged.yaml
 
 deploy:
-	@sam deploy --template-file packaged.yaml --stack-name mcc-software-collector --capabilities CAPABILITY_IAM  --parameter-overrides `cat ${BASE}/properties/${STAGE}.properties`
+	@sam deploy --template-file packaged.yaml --stack-name {{ cookiecutter.project_name }} --capabilities CAPABILITY_IAM  --parameter-overrides `cat ${BASE}/properties/${STAGE}.properties`
 
 invoke: _check_event_definition ##=> Run SAM Local function with a given event payload
 	@sam local invoke --event ${EVENT} --env-vars ${BASE}/properties/local-dev.json
@@ -115,5 +115,5 @@ define HELP_MESSAGE
 	$ make deliver-local LAMBDA_BUCKET=bucket-to-store-packaged-lambda-code-in
 
 	...::: Build and invoke locally (runs build and invoke) :::...
-	$ make local-run EVENT=events/mcc_software_collector_event.json
+	$ make local-run EVENT=events/function_event.json
 endef
