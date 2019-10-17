@@ -1,0 +1,5 @@
+{
+  "{{ cookiecutter.lambda_name }}": {
+
+  }
+}
